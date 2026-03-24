@@ -1,42 +1,43 @@
 import CacheManager from './manager';
 
+interface ITokenCacheParams {
+  userId: string;
+}
+
 interface IEncodedJWTCacheResponse {
   iv: string;
   encryptedData: string;
 }
 
-interface IEncodedJWTCacheManagerParams {
+interface IOTPCacheParams {
   userId: string;
 }
 
-interface IProfileCacheManagerParams {
+interface IProfileCacheParams {
   userId: string;
 }
 
-interface IOTPCacheManagerParams {
-  userId: string;
-}
+// ---- Creator cache ----
+const creatorRefreshTokenCache = CacheManager<ITokenCacheParams, string>('creator-refresh-token', 604800);
+const creatorAccessTokenCache = CacheManager<ITokenCacheParams, IEncodedJWTCacheResponse>('creator-access-token', 86400);
+const creatorOtpCache = CacheManager<IOTPCacheParams, { code: string }>('creator-otp', 600);
+const creatorProfileCache = CacheManager<IProfileCacheParams>('creator-profile', 600);
 
-interface IGameImpressionCacheManagerParams {
-  ip: string;
-  country: string;
-  gameId: string;
-}
-
-interface IGameCacheParams {
-  gameId: string;
-}
-
-const encodedJWTCacheManager = CacheManager<IEncodedJWTCacheManagerParams, IEncodedJWTCacheResponse>('encoded-JWT', 86400);
-const profileCacheManager = CacheManager<IProfileCacheManagerParams>('profile', 360);
-const otpDeleteAccountCacheManager = CacheManager<IOTPCacheManagerParams, { code: string }>('otp-Delete-Account', 600);
-const gameImpressionCacheManager = CacheManager<IGameImpressionCacheManagerParams>('game-impression', 120);
-const gameCacheManager = CacheManager<IGameCacheParams>('game', 360);
+// ---- Brand cache ----
+const brandRefreshTokenCache = CacheManager<ITokenCacheParams, string>('brand-refresh-token', 604800);
+const brandAccessTokenCache = CacheManager<ITokenCacheParams, IEncodedJWTCacheResponse>('brand-access-token', 86400);
+const brandOtpCache = CacheManager<IOTPCacheParams, { code: string }>('brand-otp', 600);
+const brandProfileCache = CacheManager<IProfileCacheParams>('brand-profile', 600);
 
 export {
-  encodedJWTCacheManager,
-  profileCacheManager,
-  otpDeleteAccountCacheManager,
-  gameImpressionCacheManager,
-  gameCacheManager
+  // Creator
+  creatorRefreshTokenCache,
+  creatorAccessTokenCache,
+  creatorOtpCache,
+  creatorProfileCache,
+  // Brand
+  brandRefreshTokenCache,
+  brandAccessTokenCache,
+  brandOtpCache,
+  brandProfileCache,
 };

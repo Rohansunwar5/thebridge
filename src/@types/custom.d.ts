@@ -1,8 +1,9 @@
 declare namespace Express {
   export interface Request {
     user: {
-      _id: string,
-    },
-    access_token: string | null,
+      _id: string;
+      role: 'creator' | 'brand';
+    };
+    access_token: string | null;
   }
 }

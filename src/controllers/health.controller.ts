@@ -1,8 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import os from 'os';
 import config from '../config';
-//@ts-ignore
-import { default as pjson } from '../../package.json';
 import { NotFoundError } from '../errors/not-found.error';
 import redisClient from '../services/cache';
 
@@ -17,7 +15,6 @@ const latestDeployedAt = new Date().toLocaleString();
 export const helloWorld = (req: Request, res: Response, next: NextFunction) => {
   let all = {};
   if (req.query.all) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     all = {
       ...all,
       totalmem: os.totalmem() / 1000000000,
@@ -25,12 +22,11 @@ export const helloWorld = (req: Request, res: Response, next: NextFunction) => {
     };
   }
   next({
-    message: 'Hello World - workplay.digital',
+    message: 'Bridge API',
     env: config.NODE_ENV,
     instance: instanceRandomID,
-    version: pjson.version,
-    latest: pjson.version,
     latestDeployedAt,
+    ...all,
   });
 };
 
@@ -46,14 +42,4 @@ export const health = async (
   next({
     redis: cached,
   });
-};
-
-export const country = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  const countryCode =
-    req.headers['cf-ipcountry'] || config.DEFAULT_COUNTRY_CODE;
-  next(countryCode);
 };
